@@ -36,6 +36,20 @@ test.describe('Test suite for Pet Service with CRUD operations', () => {
     validateResponseSchema(response.responseBody, expectedSchemaForPetService.getPets);
   })
 
+  test('Get pet by id', async ({request}) => {
+    //arrange
+    await createPetWithId(11, request);
+
+    //act
+    const response = await petService.getPetById(11);
+
+    //assert
+    expect.soft(response.status).toBe(200);
+    expect.soft(response.responseBody).toBeDefined();
+    expect.soft(response.responseBody.id).toBe(11);
+    validateResponseSchema(response.responseBody, expectedSchemaForPetService.pet);
+  })
+
   test('Update pet name', async ({request}) => {
     //arrange
     await createPetWithId(10, request);

@@ -5,6 +5,7 @@ import { operations } from "../.temp/types";
 type requestBodyForAddPet = operations['addPet']['requestBody']['content']['application/json'];
 type responseBodyForAddPet = operations['addPet']['responses']['200']['content']['application/json'];
 type responseBodyForGetPetByStatus = operations['findPetsByStatus']['responses']['200']['content']['application/json'];
+type responseBodyForGetPetById = operations['getPetById']['responses']['200']['content']['application/json'];
 type requestBodyForUpdatePet = operations['updatePet']['requestBody']['content']['application/json'];
 type responseBodyForUpdatePet = operations['updatePet']['responses']['200']['content']['application/json'];
 
@@ -27,6 +28,14 @@ class PetService {
     getPetByStatus = async (petStatus: 'available' | 'pending' | 'sold') => {
         const response = await this.request.get(`https://petstore3.swagger.io/api/v3/pet/findByStatus?status=${petStatus}`);
         const responseBody: responseBodyForGetPetByStatus = await response.json();
+        const status = response.status();
+
+        return { responseBody, status };
+    }
+
+    getPetById = async (id: number) => {
+        const response = await this.request.get(`https://petstore3.swagger.io/api/v3/pet/${id}`);
+        const responseBody: responseBodyForGetPetById = await response.json();
         const status = response.status();
 
         return { responseBody, status };
